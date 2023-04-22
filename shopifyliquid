@@ -1,0 +1,277 @@
+{% section 'myheader' %}
+  {{ content_for_layout }}
+  {% section 'myfooter' %}
+==============================logo Link====================
+{{ shop.url }}
+=======================SECTION INCLUDE=========================
+{% section 'banner' %}
+.slider_div .slick-prev, .slider_div .slick-next {
+    background-image: url({{ 'arrow-img.png' | asset_img_url: 'original' }});
+  }
+<img src="{{ section.settings.vide_link_txt | img_url: 'original' }}" 
+alt="{{ section.settings.our_staff_heading }}" />
+==========================image alt=====================================
+{{ shop.name }}
+===============page-title=================================
+{{ page_title }}
+=============================SET PATH===========================
+{{ 'your-script.js'  | asset_url | script_tag     }}
+{{ 'your-styles.css' | asset_url | stylesheet_tag }}
+price
+{{ product.price | money }}
+assets imag url
+{{ 'user-grey.png' | asset_img_url: 'original' }}
+{{ cart.item_count }}
+Condation
+ {% unless settings.cloth_title_2 == blank %}
+ {% endunless %}
+Product Loops
+ {% for product in collections.featured-products-on-home-page.products %}
+            
+            <div class="item">
+              <div class="full slide_itm">
+                <div class="full owl_slide_img"> <a href="{{ product.url }}">
+                <img src="{{ product.featured_image | product_img_url: 'original' }}" alt="" /></a> </div>
+                <div class="full owl_slide_txt">
+                  <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                   </div>
+              </div>
+            </div>
+            
+            {% endfor %}
+===============hover_to_change=======================
+<img src="{{  product.images[0] | img_url: 'large' }}" alt="">
+<img src="{{  product.images[1] | img_url: 'large' }}" alt="">
+Shopify section
+{{ section.settings.carousel_title_heading }}
+{{ product.price | money }}
+==============PORDUCT SECTION=====================
+product section
+  <div class="all_products">
+              {%- assign collection = collections[section.settings.collection] -%}
+        <section class="myslider_04 slider">
+                  {% for product in collection.products limit:100  %}
+            <div class="item">
+            <div class="all_products_item">
+              <div class="inner">
+                <a href="{{ product.url }}">
+                  <img src="{{ product.featured_image | product_img_url: '' }}">
+                </a>
+                  <div class="item_info">
+                    <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                  </div>
+                  <div class="product_reviews">
+                     <div class="wc_product_review_badge" data-handle="{{ product.handle }}" data-product_id="{{ product.id }}"></div>
+                  </div>
+                  <h5 class="product-price"><span>Price:
+                  </span>{{ product.price | money }} <span class="product_compare_price1"> {% if product.compare_at_price_max > product.price %}
+           {{ product.compare_at_price | money }}
+            {% endif %}</span></h5>
+                  <div class="add_cart">
+                    <form method="post" action="/cart/add">
+                     <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+                        <input type="submit" value="Add to cart" class="btn" />
+                      </form>
+                  </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </section>
+      </div>
+       {
+    "type":"collection",
+    "id":"collection",
+    "label":"Collection"
+  }
+====================CART BUTTON=========================
+<form method="post" action="/cart/add">
+  <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+  <input min="1" type="number" id="quantity" name="quantity" value="1"/>
+  <input type="submit" value="Add to cart" class="btn" />
+</form>
+====================================
+stock:
+{% assign total=0 %}
+{%for variant in product.variants %}
+{% capture i %}{{ total | plus:variant.inventory_quantity }}{%endcapture%}
+{% assign total = i %}
+{%endfor%}
+<div class="stock_product"> 
+<i class="fa fa-clock-o" aria-hidden="true"></i> Nog <b> {{ total }} </b> op voorraad
+</div>
+======================================
+save
+<span>
+{{ product.compare_at_price_max | minus:product.price | times:100 | divided_by:product.compare_at_price_max }}% 
+{{ settings.save_text_price }}</span>
+{{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+CURRENCY CODE SHOPIFY SETTING
+<span class="money">${{amount}} USD</span>
+<span class="money">${{amount}}</span>
+===================================MENU==========================================
+ {% assign linklist = linklists[section.settings.mani_menu] %}
+                                        
+{% for link in linklist.links %}
+<li> <a href="{{ link.url }}">{{ link.title }}</a> </li>
+{% endfor %}
+======================DROPDOWN MENU============================================
+        <nav>
+        <!-- Menu Toggle btn-->
+          {% assign linklist = linklists[section.settings.menu] %}
+        <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
+{% for link in linklist.links %}
+<li><a href="{{ link.url }}">{{ link.title }}</a>
+{% if link.links != blank %}
+        <ul>
+            {% for child_link in link.links %}  
+              <li><a href= "{{ child_link.url }}">{{ child_link.title }}</a>
+            {% if child_link.links != blank %}
+              <ul>
+             {% for grandchild_link in child_link.links %}  
+                  <li><a href= "{{ grandchild_link.url }}">{{ grandchild_link.title }}</a></li>
+              {% endfor %}
+             </ul>
+           {% endif %}   
+              </li>
+            {% endfor %}
+          </ul> 
+{% endif %} 
+</li>
+{% endfor %}
+</ul>
+    </nav>
+    {
+        "type": "link_list",
+        "id": "main_menu1",
+        "label": "Menu"
+    },
+        =============================================
+=========================SHOW All COLLECTION/CATAGEORY====================================
+https://shopify.github.io/liquid-code-examples/example/collection-list
+{%- for collection in collections -%}
+    <div class="items">
+        <div class="h-cate">
+            <div class="c-img">
+                <a href="{{ collection.url }}" class="home-cate-img">
+                <img class="img-fluid" src="{{ collection | img_url: '' }}" alt="{{ collection.title }}">
+                        <span class="cat-title">{{ collection.title }}</span>
+                </a>
+            </div>
+            <span class="cat-num">{{ collection.products_count }}</span>
+        </div>
+    </div>      
+{% endfor %}
+================================FAQS============================
+<div class="full section_collapes">
+  <div class="container padding_0">
+  <h1>{{ section.settings.first_h1 }}</h1>
+      {% if section.blocks.size > 0 %}
+<div class="accordions">
+  {% assign count = 0 %}
+    {% for block in section.blocks %}
+  {% assign count = count | plus: 1 %} 
+  <div class="accordion-item">
+    <div class="accordion-title" data-tab="{{ count }}">
+      <h2>{{ block.settings.faqs_heading1 }}<i class="fa fa-chevron-down"></i></h2>
+    </div>
+    <div class="accordion-content" id="{{ count }}">
+      <p>
+        {{ block.settings.faqs_head2 }}
+      </p>
+    </div>
+  </div>
+    {% endfor %}
+</div>
+{% endif %}
+  </div>
+</div>
+======================SHOW SECTION==========================
+{% if section.settings.enble_section != blank %}
+{% endif %}
+  {
+            "type": "checkbox",
+            "id": "enble_section",
+            "label": "Enable Section"
+     },
+     ==================================line==========
+        {
+        "type": "header",
+         "content" : "Second Widget"
+      }
+    ======================Collection Title Show=================== 
+    <ul>
+     {%- for collection in collections -%}
+     <li><a href="{{ collection.url }}">  {{ collection.title }}</a></li>
+       {%- endfor -%}
+   </ul>
+             ======================== QUANTITY BOX PRODUCT VAR================
+             <div class="quantity_wrap">
+      {% assign max_quantity = product.selected_or_first_available_variant.inventory_quantity %}
+            <input min="1" max="{{ max_quantity }}" type="number" id="quantity" name="quantity" value="1" />
+          </div>
+===========Custom Link Target Blank==========================
+          var links = document.links;
+for (let i = 0, linksLength = links.length ; i < linksLength ; i++) {
+  if (links[i].hostname !== window.location.hostname) {
+    links[i].target = '_blank';
+    links[i].rel = 'noreferrer noopener';
+  }
+}
+==================================
+==============================porduct avalabile condition=========================
+{% if variant.inventory_policy == deny and product.available %}
+  <div class="product_price">
+      {{ product.price | money }} <span class="product_com_pric">{{ product.compare_at_price | money }}</span>
+   </div>
+                     
+    <div class="add_cart">
+       <form method="post" action="/cart/add">
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+          <input type="submit" value="Add to cart" class="btn" />
+        </form>
+    </div>
+    {% else %} 
+  <span class="sold_out_prod">sold out</span>
+{% endif %}
+=================================Multiple Blocks====================================
+{% schema %}
+  {
+    "name": "Multiple Blocks",
+    "blocks":[
+      {
+        "type": "block-1",
+        "name": "Block 1",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }
+        ]
+      },
+      {
+        "type": "block-2",
+        "name": "Block 2",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+{% stylesheet %}
+{% endstylesheet %}
+{% javascript %}
+{% endjavascript %}
+{% for block in section.blocks %}
+  {% if block.type == 'block-1' %}
+    <h2>{{block.title}}</h2>
+  {% elsif block.type == 'block-2' %}
+    <h3>{{block.title}}</h3>
+  {% endif %}
+{% endfor %}
